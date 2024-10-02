@@ -7,7 +7,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/spf13/cobra v1.8.1
-	github.com/totegamma/concurrent v1.3.3
+	github.com/totegamma/concurrent v1.4.0-beta0
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.12
 )

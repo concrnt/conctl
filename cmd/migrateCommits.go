@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/lib/pq"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/cobra"
 	"github.com/totegamma/concurrent/cdid"
@@ -111,7 +110,7 @@ to quickly create a Cobra application.`,
 			}
 
 			// check if the document already exists
-			var existing CommitLog
+			var existing core.CommitLog
 			db.Where("document_id = ?", documentID).First(&existing)
 			if existing.ID != 0 { // already exists
 				// check if the owner already exists
@@ -123,7 +122,7 @@ to quickly create a Cobra application.`,
 					skipped++
 				}
 			} else { // create new
-				log := CommitLog{
+				log := core.CommitLog{
 					DocumentID:  documentID,
 					IsEphemeral: false,
 					Type:        base.Type,
@@ -150,19 +149,6 @@ to quickly create a Cobra application.`,
 		fmt.Printf("Skipped: %d\n", skipped)
 		fmt.Printf("Errored: %d\n", errored)
 	},
-}
-
-type CommitLog struct {
-	ID          uint           `json:"id" gorm:"primaryKey;auto_increment"`
-	IP          string         `json:"ip" gorm:"type:text"`
-	DocumentID  string         `json:"documentID" gorm:"type:char(26);uniqueIndex:idx_document_id"`
-	IsEphemeral bool           `json:"isEphemeral" gorm:"type:boolean;default:false"`
-	Type        string         `json:"type" gorm:"type:text"`
-	Document    string         `json:"document" gorm:"type:json"`
-	Signature   string         `json:"signature" gorm:"type:char(130)"`
-	SignedAt    time.Time      `json:"signedAt" gorm:"type:timestamp with time zone;not null;default:clock_timestamp()"`
-	Owners      pq.StringArray `json:"owners" gorm:"type:char(42)[]"`
-	CDate       time.Time      `json:"cdate" gorm:"type:timestamp with time zone;not null;default:clock_timestamp()"`
 }
 
 func init() {
