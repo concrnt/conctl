@@ -115,8 +115,18 @@ to quickly create a Cobra application.`,
 			if existing.ID != 0 { // already exists
 				// check if the owner already exists
 				if !slices.Contains(existing.Owners, owner) {
-					existing.Owners = append(existing.Owners, owner)
-					db.Save(&existing)
+
+					ownerRecord := core.CommitOwner{
+						CommitLogID: existing.ID,
+						Owner:       owner,
+					}
+
+					err := db.Create(&ownerRecord).Error
+					if err != nil {
+						errored++
+						continue
+					}
+
 					updated++
 				} else {
 					skipped++
@@ -129,7 +139,7 @@ to quickly create a Cobra application.`,
 					Document:    document,
 					Signature:   signature,
 					SignedAt:    base.SignedAt,
-					Owners:      []string{owner},
+					//Owners:      []string{owner},
 				}
 
 				err := db.Create(&log).Error
@@ -137,6 +147,17 @@ to quickly create a Cobra application.`,
 					errored++
 					continue
 				}
+
+				ownerRecord := core.CommitOwner{
+					CommitLogID: log.ID,
+					Owner:       owner,
+				}
+				err = db.Create(&ownerRecord).Error
+				if err != nil {
+					errored++
+					continue
+				}
+
 				created++
 			}
 
