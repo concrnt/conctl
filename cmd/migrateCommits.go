@@ -114,8 +114,9 @@ to quickly create a Cobra application.`,
 			db.Where("document_id = ?", documentID).First(&existing)
 			if existing.ID != 0 { // already exists
 				// check if the owner already exists
-				if !slices.Contains(existing.Owners, owner) {
-
+				var count int64
+				db.Model(&core.CommitOwner{}).Where("commit_log_id = ? AND owner = ?", existing.ID, owner).Count(&count)
+				if count == 0 {
 					ownerRecord := core.CommitOwner{
 						CommitLogID: existing.ID,
 						Owner:       owner,
