@@ -3,6 +3,7 @@ module github.com/concrnt/conctl
 go 1.22.5
 
 require (
+	github.com/SherClockHolmes/webpush-go v1.3.0
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/spf13/cobra v1.8.1
@@ -52,6 +53,7 @@ require (
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/glog v1.2.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.5-0.20220116011046-fa5810519dcb // indirect
