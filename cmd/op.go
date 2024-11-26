@@ -46,14 +46,7 @@ func (c *Config) Load(path string) error {
 
 // opCmd represents the op command
 var opCmd = &cobra.Command{
-	Use:   "op",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use: "op",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 
 		var err error
