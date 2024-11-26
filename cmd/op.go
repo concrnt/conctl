@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/go-yaml/yaml"
@@ -24,6 +25,16 @@ var (
 
 type Config struct {
 	Concrnt core.ConfigInput `yaml:"concrnt"`
+	Server  Server           `yaml:"server"`
+}
+
+type Server struct {
+	Dsn           string `yaml:"dsn"`
+	RedisAddr     string `yaml:"redisAddr"`
+	RedisDB       int    `yaml:"redisDB"`
+	MemcachedAddr string `yaml:"memcachedAddr"`
+
+	RepositoryPath string `yaml:"repositoryPath"`
 }
 
 func (c *Config) Load(path string) error {
@@ -79,6 +90,60 @@ var opCmd = &cobra.Command{
 			return err
 		}
 
+		configPath, _ := cmd.Flags().GetString("configpath")
+		if configPath == "" {
+			configPath = "/etc/concrnt/config/config.yaml"
+		}
+		rootConf := Config{}
+		err = rootConf.Load(configPath)
+		if err == nil {
+			conf := core.SetupConfig(rootConf.Concrnt)
+			config = &conf
+		}
+
+		if rootConf.Server.Dsn != "" {
+			split := strings.Split(rootConf.Server.Dsn, " ")
+			for _, s := range split {
+				if strings.Contains(s, "host=") {
+					if dbhost == "" {
+						dbhost = strings.Split(s, "=")[1]
+					}
+				} else if strings.Contains(s, "user=") {
+					if dbuser == "" {
+						dbuser = strings.Split(s, "=")[1]
+					}
+				} else if strings.Contains(s, "password=") {
+					if dbpass == "" {
+						dbpass = strings.Split(s, "=")[1]
+					}
+				} else if strings.Contains(s, "dbname=") {
+					if dbname == "" {
+						dbname = strings.Split(s, "=")[1]
+					}
+				} else if strings.Contains(s, "port=") {
+					if dbport == "" {
+						dbport = strings.Split(s, "=")[1]
+					}
+				}
+			}
+		}
+
+		if dbhost == "" {
+			dbhost = "localhost"
+		}
+		if dbuser == "" {
+			dbuser = "postgres"
+		}
+		if dbpass == "" {
+			dbpass = "postgres"
+		}
+		if dbname == "" {
+			dbname = "concrnt"
+		}
+		if dbport == "" {
+			dbport = "5432"
+		}
+
 		dsn := fmt.Sprintf(
 			"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 			dbhost, dbuser, dbpass, dbname, dbport,
@@ -92,22 +157,20 @@ var opCmd = &cobra.Command{
 
 		redisAddr, _ := cmd.Flags().GetString("redisaddr")
 
+		if redisAddr == "" {
+			redisAddr = rootConf.Server.RedisAddr
+		}
+		if redisAddr == "" {
+			redisAddr = "localhost:6379"
+		}
+
 		rdb = redis.NewClient(&redis.Options{
 			Addr:     redisAddr,
 			Password: "",
 			DB:       0,
 		})
-
 		if rdb == nil {
 			return fmt.Errorf("Failed to connect to redis")
-		}
-
-		configPath, _ := cmd.Flags().GetString("configpath")
-		rootConf := Config{}
-		err = rootConf.Load(configPath)
-		if err == nil {
-			conf := core.SetupConfig(rootConf.Concrnt)
-			config = &conf
 		}
 
 		return nil
@@ -117,11 +180,11 @@ var opCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(opCmd)
 
-	opCmd.PersistentFlags().StringP("dbname", "d", "concrnt", "Database name")
-	opCmd.PersistentFlags().StringP("dbhost", "H", "localhost", "Database host")
-	opCmd.PersistentFlags().StringP("dbuser", "u", "postgres", "Database user")
-	opCmd.PersistentFlags().StringP("dbpass", "p", "postgres", "Database password")
-	opCmd.PersistentFlags().StringP("dbport", "P", "5432", "Database port")
-	opCmd.PersistentFlags().StringP("redisaddr", "r", "localhost:6379", "Redis address")
-	opCmd.PersistentFlags().StringP("configpath", "c", "/etc/concrnt/config/config.yaml", "Config file path")
+	opCmd.PersistentFlags().StringP("dbname", "d", "", "Database name (default: concrnt)")
+	opCmd.PersistentFlags().StringP("dbhost", "H", "", "Database host (default: localhost)")
+	opCmd.PersistentFlags().StringP("dbuser", "u", "", "Database user (default: postgres)")
+	opCmd.PersistentFlags().StringP("dbpass", "p", "", "Database password (default: postgres)")
+	opCmd.PersistentFlags().StringP("dbport", "P", "", "Database port (default: 5432)")
+	opCmd.PersistentFlags().StringP("redisaddr", "r", "", "Redis address (default: localhost:6379)")
+	opCmd.PersistentFlags().StringP("configpath", "c", "", "Config file path (default: /etc/concrnt/config/config.yaml)")
 }
