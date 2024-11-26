@@ -9,6 +9,7 @@ import (
 
 var setCmd = &cobra.Command{
 	Use:        "set",
+	Short:      "Set the tag of the entity",
 	Args:       cobra.ExactArgs(2),
 	ArgAliases: []string{"ccid", "tag"},
 	Run: func(cmd *cobra.Command, args []string) {

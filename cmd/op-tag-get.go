@@ -9,6 +9,7 @@ import (
 
 var roleGetCmd = &cobra.Command{
 	Use:        "get",
+	Short:      "Get the tag of the entity",
 	Args:       cobra.ExactArgs(1),
 	ArgAliases: []string{"ccid"},
 	Run: func(cmd *cobra.Command, args []string) {

@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -44,9 +41,9 @@ func (c *Config) Load(path string) error {
 	return nil
 }
 
-// opCmd represents the op command
 var opCmd = &cobra.Command{
-	Use: "op",
+	Use:     "operation",
+	Aliases: []string{"op"},
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 
 		var err error
