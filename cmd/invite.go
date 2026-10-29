@@ -41,7 +41,7 @@ var inviteCmd = &cobra.Command{
 			return
 		}
 
-		token, err := jwt.Create(jwt.Claims{
+		token, err := jwt.Create(core.JwtClaims{
 			Subject:        "CONCRNT_INVITE",
 			JWTID:          uuid.New().String(),
 			Audience:       config.FQDN,
