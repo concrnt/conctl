@@ -21,7 +21,7 @@ var roleGetCmd = &cobra.Command{
 		if err.Error != nil {
 			fmt.Println(err.Error)
 		} else {
-			fmt.Printf(entity.Tag)
+			fmt.Print(entity.Tag)
 		}
 	},
 }
