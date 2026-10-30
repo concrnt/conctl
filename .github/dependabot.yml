@@ -10,6 +10,10 @@ updates:
       time: "09:00"
       timezone: Asia/Tokyo
     open-pull-requests-limit: 10
+    # conctl は concrnt v1.7 系の API(core / x/jwt)前提。以降の版ではこれらが消えていてグループ全体が解決不能になる
+    ignore:
+      - dependency-name: github.com/concrnt/concrnt
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
     groups:
       gomod-minor-patch:
         applies-to: version-updates
