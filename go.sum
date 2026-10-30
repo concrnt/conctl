@@ -90,8 +90,8 @@ github.com/cometbft/cometbft v0.40.0 h1:0+zc7FlcnonFfMwzhyDCd5vK/fHZqz0RfRyTCxZs
 github.com/cometbft/cometbft v0.40.0/go.mod h1:3z+Aq3BSkwNKw+Z40yPUTxtSRIpQa0w2PyCwyaxxHeU=
 github.com/cometbft/cometbft-db v0.14.3 h1:foX2zuH/L6feyUSLDWg9YRLvt9w8iWVo883wGcyhdQk=
 github.com/cometbft/cometbft-db v0.14.3/go.mod h1:5CcpGc+0fgZh8ecKa38MwDHfmRAGiRgQg6bGNs1HA/g=
-github.com/concrnt/concrnt v1.7.4 h1:0nt0I7X/Ni2G+z/xWid4XEHf6L+YrVMg4aUSPvjsvig=
-github.com/concrnt/concrnt v1.7.4/go.mod h1:vNvSvfudzvEjQNsIL8/HvUbz9LRaW5bHsTQ2sVIbR7E=
+github.com/concrnt/concrnt v1.7.7 h1:cImtw5MaRlyOz3MOLhjyX2H6g7gFbSCtUW2eqXK8S4Y=
+github.com/concrnt/concrnt v1.7.7/go.mod h1:vNvSvfudzvEjQNsIL8/HvUbz9LRaW5bHsTQ2sVIbR7E=
 github.com/cosmos/btcutil v1.0.5 h1:t+ZFcX77LpKtDBhjucvnOH8C2l2ioGsBNEQ3jef8xFk=
 github.com/cosmos/btcutil v1.0.5/go.mod h1:IyB7iuqZMJlthe2tkIFL33xPyzbFYP0XVdS8P5lUPis=
 github.com/cosmos/btree v1.0.0 h1:V3OdIzTQw2yE7f6pD6FfA9j2/YLj1UpB9MdY0zU3v3k=
