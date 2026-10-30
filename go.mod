@@ -4,7 +4,7 @@ go 1.26.5
 
 require (
 	github.com/SherClockHolmes/webpush-go v1.4.0
-	github.com/concrnt/concrnt v1.7.4
+	github.com/concrnt/concrnt v1.7.7
 	github.com/cosmos/cosmos-sdk v0.55.0
 	github.com/cosmos/go-bip39 v1.0.0
 	github.com/go-yaml/yaml v2.1.0+incompatible
